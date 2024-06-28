@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма регистрации</title>
+    <style>
+        .error {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="registrationForm">
+        <label for="username">Логин:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <span class="error" id="usernameError">Введите логин</span><br>
+
+        <label for="email">Почта:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <span class="error" id="emailError">Введите корректный адрес почты</span><br>
+
+        <label for="password">Пароль:</label><br>
+        <input type="password" id="password" name="password" required><br>
+        <span class="error" id="passwordError">Введите пароль</span><br>
+
+        <label for="phone">Телефон:</label><br>
+        <input type="number" id="phone" name="phone" placeholder="8XXXXXXXXXX" required><br>
+        <span class="error" id="phoneError">Введите номер телефона в формате 8XXXXXXXXXX</span><br>
+
+        <button type="submit">Регистрация</button>
+    </form>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            const usernameInput = document.getElementById('username');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const phoneInput = document.getElementById('phone');
+
+            const usernameError = document.getElementById('usernameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const phoneError = document.getElementById('phoneError');
+
+            const phonePattern = /^\8\d{3}\d{3}\d{2}\d{2}$/;
+
+            let valid = true;
+
+            // Проверка логина
+            if (!usernameInput.value) {
+                usernameError.style.display = 'block';
+                valid = false;
+            } else {
+                usernameError.style.display = 'none';
+            }
+
+            // Проверка почты
+            if (!emailInput.value || !emailInput.checkValidity()) {
+                emailError.style.display = 'block';
+                valid = false;
+            } else {
+                emailError.style.display = 'none';
+            }
+
+            // Проверка пароля
+            if (!passwordInput.value) {
+                passwordError.style.display = 'block';
+                valid = false;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            // Проверка телефона
+            if (!phonePattern.test(phoneInput.value)) {
+                phoneError.style.display = 'block';
+                valid = false;
+            } else {
+                phoneError.style.display = 'none';
+            }
+
+            if (valid) {
+                const userData = {
+                    username: usernameInput.value,
+                    email: emailInput.value,
+                    password: passwordInput.value,
+                    phone: phoneInput.value
+                };
+                localStorage.setItem('userData', JSON.stringify(userData));
+                alert('Регистрация прошла успешно!');
+            } else {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
